@@ -60,7 +60,7 @@ st.write(df)
 st.write('---')
 
 # Load the pre-trained model
-load_model = pickle.load(open('optimized_gbrt_hhv_model.pkl', 'rb'))  # update the filename
+load_model = pickle.load(open('gradient_boosting_model', 'rb'))  # update the filename
 
 # Predict HHV
 st.header('Predicted Higher Heating Value (MJ/kg)')
