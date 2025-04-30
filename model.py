@@ -36,7 +36,6 @@ def get_input_features():
     A   = st.sidebar.slider('A (%)', 14.96, 80.40, 45.00)
     Ht  = st.sidebar.slider('Ht (min)', 0.00, 720.00, 360.00)
     HT  = st.sidebar.slider('HT (°C)', 100.00, 380.00, 240.00)
-    Nhc = st.sidebar.slider('Nhc (%)', 0.39, 9.29, 5.00)
 
     data_user = {
         'N (%)': N,
@@ -44,8 +43,7 @@ def get_input_features():
         'Fc (%)': Fc,
         'A (%)': A,
         'Ht (min)': Ht,
-        'HT (oC)': HT,
-        'Nhc (%)': Nhc
+        'HT (oC)': HT
     }
 
     features = pd.DataFrame(data_user, index=[0])
@@ -60,7 +58,7 @@ st.write(df)
 st.write('---')
 
 # Load the pre-trained model
-load_model = pickle.load(open('gradient_boosting_model.pkl', 'rb'))  # update the filename
+load_model = pickle.load(open('gradient_boosting_model.pkl', 'rb'))  # update the filename if needed
 
 # Predict HHV
 st.header('Predicted Higher Heating Value (MJ/kg)')
