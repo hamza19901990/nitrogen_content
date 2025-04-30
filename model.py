@@ -16,7 +16,7 @@ image = Image.open('msw.jpg')  # replace with your relevant image
 st.image(image, use_column_width=True)
 
 # Load your dataset
-data = pd.read_csv("msw_data.csv")  # replace with your actual CSV filename
+data = pd.read_csv("sludge3.csv")  # replace with your actual CSV filename
 
 # Display basic dataset info
 st.subheader('Data Information')
