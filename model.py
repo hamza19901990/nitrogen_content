@@ -4,18 +4,18 @@ import streamlit as st
 from PIL import Image
 import pickle
 
-# App Title and Description
+# App Title and Description  ✅ fixed to nitrogen content (not HHV)
 st.write("""
-# MSW Fuel Higher Heating Value Prediction
-This app predicts the **Higher Heating Value (HHV)** of municipal solid waste (MSW) fuel using key composition and process parameters!
+# Hydrochar Nitrogen Content Prediction (HTC)
+This app predicts the **nitrogen content in hydrochar (N_hc %)** produced via **hydrothermal carbonization (HTC)** of sewage sludge/MSW-like feedstocks, using composition and process parameters.
 """)
 st.write('---')
 
-# Contextual image (optional: change the filename if needed)
+# Contextual image (optional)
 image = Image.open('msw.jpg')  # replace with your relevant image
 st.image(image, use_column_width=True)
 
-# Load your dataset
+# Load your dataset (for quick inspection)
 data = pd.read_csv("sludge3.csv")  # replace with your actual CSV filename
 
 # Display basic dataset info
@@ -26,17 +26,19 @@ st.write(data.isna().sum())
 st.write("Correlation Matrix:")
 st.write(data.corr())
 
-# Sidebar for input parameters
+# Sidebar for input parameters (kept names to match your trained model)
 st.sidebar.header('Specify Input Parameters')
 
 def get_input_features():
-    N   = st.sidebar.slider('N (%)', 1.21, 8.85, 4.00)
-    O   = st.sidebar.slider('O (%)', 10.50, 30.28, 20.00)
-    Fc  = st.sidebar.slider('Fc (%)', 0.70, 18.55, 9.00)
-    A   = st.sidebar.slider('A (%)', 14.96, 80.40, 45.00)
-    Ht  = st.sidebar.slider('Ht (min)', 0.00, 720.00, 360.00)
-    HT  = st.sidebar.slider('HT (°C)', 100.00, 380.00, 240.00)
+    # If these ranges came from your dataset, keep them. Otherwise adjust as needed.
+    N   = st.sidebar.slider('Feedstock N (%)', 1.21, 8.85, 4.00)
+    O   = st.sidebar.slider('Feedstock O (%)', 10.50, 30.28, 20.00)
+    Fc  = st.sidebar.slider('Fixed Carbon, Fc (%)', 0.70, 18.55, 9.00)
+    A   = st.sidebar.slider('Ash, A (%)', 14.96, 80.40, 45.00)
+    Ht  = st.sidebar.slider('Heating time, Ht (min)', 0.00, 720.00, 360.00)
+    HT  = st.sidebar.slider('Heating temperature, HT (°C)', 100.00, 380.00, 240.00)
 
+    # IMPORTANT: keep keys exactly as used to train the model
     data_user = {
         'N (%)': N,
         'O (%)': O,
@@ -57,11 +59,11 @@ st.header('Specified Input Parameters')
 st.write(df)
 st.write('---')
 
-# Load the pre-trained model
+# Load the pre-trained model (assumed trained for N_hc %)
 load_model = pickle.load(open('gradient_boosting_model.pkl', 'rb'))  # update the filename if needed
 
-# Predict HHV
-st.header('Predicted Higher Heating Value (MJ/kg)')
+# Predict nitrogen content in hydrochar
+st.header('Predicted Nitrogen Content in Hydrochar, N_hc (%)')
 prediction = load_model.predict(df)
-st.write(prediction[0])
+st.write(float(prediction[0]))
 st.write('---')
